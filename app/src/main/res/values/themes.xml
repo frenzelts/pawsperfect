@@ -1,0 +1,3 @@
+<resources>
+    <style name="Theme.DogGuesser" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
+</resources>
