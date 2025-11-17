@@ -16,7 +16,7 @@
         android:theme="@style/Theme.DogGuesser">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true">
 
             <intent-filter>

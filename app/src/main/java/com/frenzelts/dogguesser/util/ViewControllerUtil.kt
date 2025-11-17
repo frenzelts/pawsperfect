@@ -8,18 +8,23 @@ import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.frenzelts.dogguesser.presentation.common.BaseViewController
 
 object ViewControllerUtil {
 
     @Composable
-    inline fun <VM: ViewModel, VC: BaseViewController<VM>> rememberViewController(
-        factory: @DisallowComposableCalls (ComponentActivity) -> VC
+    inline fun <reified VM: ViewModel, VC: BaseViewController<VM>> rememberViewController(
+        vmKey: String? = "",
+        crossinline factory: @DisallowComposableCalls (ComponentActivity) -> VC
     ): VC? {
         val activity = rememberFindActivity() ?: return null
-        return factory(activity).apply {
-            init(activity)
+        val viewController = remember(vmKey) {
+            factory(activity).apply {
+                init(activity)
+            }
         }
+        return viewController
     }
 
     @Composable

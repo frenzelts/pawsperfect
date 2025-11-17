@@ -2,6 +2,7 @@ package com.frenzelts.dogguesser.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.frenzelts.dogguesser.presentation.home.HomeViewModel
 import com.frenzelts.dogguesser.presentation.quiz.QuizViewModel
 import dagger.Binds
 import dagger.Module
@@ -17,4 +18,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(QuizViewModel::class)
     abstract fun bindQuizViewModel(vm: QuizViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeViewModel::class)
+    abstract fun bindHomeViewModel(vm: HomeViewModel): ViewModel
 }

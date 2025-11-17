@@ -3,6 +3,7 @@ package com.frenzelts.dogguesser.presentation.common
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frenzelts.dogguesser.di.DIManager
 import kotlinx.coroutines.CoroutineScope
@@ -12,8 +13,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
-abstract class BaseViewController<VM>: DefaultLifecycleObserver {
+abstract class BaseViewController<VM: ViewModel>: DefaultLifecycleObserver {
 
     lateinit var activity: ComponentActivity
         private set
@@ -65,6 +67,5 @@ abstract class BaseViewController<VM>: DefaultLifecycleObserver {
     sealed class UiEvent {
         object HapticSuccess : UiEvent()
         object HapticError : UiEvent()
-        data class Navigate(val route: String) : UiEvent()
     }
 }
