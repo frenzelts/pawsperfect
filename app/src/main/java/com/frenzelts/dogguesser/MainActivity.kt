@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DIManager.getAppComponent().inject(this)
+        DIManager.createAppComponent(application).inject(this)
 
         setContent {
             DogGuesserTheme {

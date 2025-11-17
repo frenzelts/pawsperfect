@@ -1,9 +1,11 @@
 package com.frenzelts.dogguesser.presentation.quiz
 
 import androidx.lifecycle.ViewModelProvider
+import com.frenzelts.dogguesser.data.local.ScoreDataStore
 import com.frenzelts.dogguesser.di.DIManager
 import com.frenzelts.dogguesser.domain.model.QuizQuestion
 import com.frenzelts.dogguesser.presentation.common.BaseViewController
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class QuizViewController : BaseViewController<QuizViewModel>() {
@@ -11,8 +13,11 @@ class QuizViewController : BaseViewController<QuizViewModel>() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    @Inject
+    lateinit var scoreStore: ScoreDataStore
+
     override fun injectComponent() {
-        DIManager.getAppComponent().inject(this)
+        DIManager.createAppComponent(activity.application).inject(this)
     }
 
     override fun createViewModel(factory: ViewModelProvider.Factory) {
@@ -42,5 +47,14 @@ class QuizViewController : BaseViewController<QuizViewModel>() {
     fun reload() {
         val viewModel = viewModel ?: return
         viewModel.loadQuestion()
+    }
+
+    override fun onScreenStopped() {
+        viewControllerScope.launch {
+            viewModel?.let {
+                scoreStore.saveHighScore(it.score)
+                scoreStore.saveHighStreak(it.streak)
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.frenzelts.dogguesser.presentation.common
 
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import com.frenzelts.dogguesser.di.DIManager
 import kotlinx.coroutines.CoroutineScope
@@ -11,7 +13,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-abstract class BaseViewController<VM> {
+abstract class BaseViewController<VM>: DefaultLifecycleObserver {
 
     lateinit var activity: ComponentActivity
         private set
@@ -29,8 +31,9 @@ abstract class BaseViewController<VM> {
         this.activity = activity
         injectComponent()
 
-        // Create VM after injection
-        val factory = DIManager.getAppComponent().viewModelFactory()
+        activity.lifecycle.addObserver(this)
+
+        val factory = DIManager.createAppComponent(activity.application).viewModelFactory()
         createViewModel(factory)
     }
 
@@ -38,15 +41,26 @@ abstract class BaseViewController<VM> {
 
     open fun createViewModel(factory: ViewModelProvider.Factory) { }
 
-    open fun onDestroy() {
-        viewModel = null
-        controllerJob.cancel()
-        viewControllerScope.cancel()
-    }
-
     fun sendEvent(event: UiEvent) {
         viewControllerScope.launch { _events.emit(event) }
     }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        onScreenDestroyed()
+        viewModel = null
+        controllerJob.cancel()
+        viewControllerScope.cancel()
+        owner.lifecycle.removeObserver(this)
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        onScreenStopped()
+    }
+
+    open fun onScreenStopped() { }
+    open fun onScreenDestroyed() { }
 
     sealed class UiEvent {
         object HapticSuccess : UiEvent()

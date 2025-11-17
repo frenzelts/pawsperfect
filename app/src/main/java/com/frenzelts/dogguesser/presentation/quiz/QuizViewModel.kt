@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.frenzelts.dogguesser.data.local.ScoreDataStore
 import com.frenzelts.dogguesser.domain.usecase.GetQuizQuestion
 import com.frenzelts.dogguesser.domain.model.QuizQuestion
 import com.frenzelts.dogguesser.presentation.quiz.ui.OptionLayoutMode
@@ -13,7 +14,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class QuizViewModel @Inject constructor (
-    private val getQuizQuestion: GetQuizQuestion
+    private val getQuizQuestion: GetQuizQuestion,
+    private val scoreStore: ScoreDataStore
 ) : ViewModel() {
 
     var quizState by mutableStateOf<QuizUiState>(QuizUiState.Loading)
@@ -60,7 +62,7 @@ class QuizViewModel @Inject constructor (
         } else {
             lives --
             if (lives <= 0) {
-                isGameOver = true
+                onGameOver()
             } else {
                 streak = 0
             }
@@ -69,11 +71,23 @@ class QuizViewModel @Inject constructor (
         return isCorrect
     }
 
+    private fun onGameOver() {
+        isGameOver = true
+        saveHighestScore()
+    }
+
     fun resetGame() {
         score = 0
         streak = 0
         lives = 3
         loadQuestion()
+    }
+
+    fun saveHighestScore() {
+        viewModelScope.launch {
+            scoreStore.saveHighScore(score)
+            scoreStore.saveHighStreak(streak)
+        }
     }
 
     fun toggleViewMode() {

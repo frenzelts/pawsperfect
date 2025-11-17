@@ -1,11 +1,14 @@
 package com.frenzelts.dogguesser.di
 
+import android.app.Application
 import com.frenzelts.dogguesser.MainActivity
 import com.frenzelts.dogguesser.di.module.NetworkModule
+import com.frenzelts.dogguesser.di.module.PreferenceModule
 import com.frenzelts.dogguesser.di.module.RepositoryModule
 import com.frenzelts.dogguesser.di.viewmodel.ViewModelModule
 import com.frenzelts.dogguesser.di.viewmodel.DaggerViewModelFactory
 import com.frenzelts.dogguesser.presentation.quiz.QuizViewController
+import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,7 +17,8 @@ import javax.inject.Singleton
     modules = [
         NetworkModule::class,
         RepositoryModule::class,
-        ViewModelModule::class
+        ViewModelModule::class,
+        PreferenceModule::class,
     ]
 )
 interface AppComponent {
@@ -27,5 +31,8 @@ interface AppComponent {
     @Component.Builder
     interface Builder {
         fun build(): AppComponent
+
+        @BindsInstance
+        fun application(application: Application): Builder
     }
 }

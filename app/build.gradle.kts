@@ -1,5 +1,4 @@
 plugins {
-//    alias(libs.plugins.android.library)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
@@ -26,27 +25,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-
-//    compileOptions {
-//        sourceCompatibility = JavaVersion.VERSION_1_8
-//        targetCompatibility = JavaVersion.VERSION_1_8
-//    }
-//
-//    kotlinOptions {
-//        jvmTarget = "1.8"
-//    }
-
-//    composeOptions {
-//        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
-//    }
 }
-
-//kapt {
-//    javacOptions {
-//        option("-source", "1.8")
-//        option("-target", "1.8")
-//    }
-//}
 
 dependencies {
 
@@ -67,7 +46,9 @@ dependencies {
     // ---- Dependency Injection ----
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
-//    kapt(libs.hilt.compiler)
+
+    // ---- Local Storage ----
+    implementation(libs.datastore.preferences)
 
     // ---- Networking ----
     implementation(libs.retrofit)

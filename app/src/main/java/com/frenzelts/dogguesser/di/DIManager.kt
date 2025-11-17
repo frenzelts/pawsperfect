@@ -1,9 +1,14 @@
 package com.frenzelts.dogguesser.di
 
+import android.app.Application
+
 object DIManager {
-    private val _appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder().build()
+
+    fun createAppComponent(application: Application): AppComponent {
+        return DaggerAppComponent
+            .builder()
+            .application(application)
+            .build()
     }
 
-    fun getAppComponent(): AppComponent = _appComponent
 }
