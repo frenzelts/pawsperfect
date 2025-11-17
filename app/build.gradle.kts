@@ -39,6 +39,9 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     implementation(libs.androidx.activity.compose)
 
+    // ------ Navigation ------
+    implementation(libs.androidx.navigation.compose)
+
     // ---- ViewModel + Compose ----
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.runtime.compose)

@@ -1,5 +1,6 @@
 package com.frenzelts.dogguesser.presentation.quiz.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
@@ -20,7 +21,7 @@ import com.frenzelts.dogguesser.presentation.quiz.QuizViewController
 import com.frenzelts.dogguesser.util.ViewControllerUtil
 
 @Composable
-fun QuizScreen() {
+fun QuizScreen(onBack: () -> Unit) {
     val viewController = ViewControllerUtil.rememberViewController {
         QuizViewController()
     } ?: return
@@ -49,7 +50,7 @@ fun QuizScreen() {
         topBar = {
             NavBar(
                 title = "Guess the Breed",
-                onBack = { viewController.sendEvent(BaseViewController.UiEvent.Navigate("back")) },
+                onBack = { onBack() },
                 action = {
                     val icon = if (viewModel.layoutMode == OptionLayoutMode.LIST)
                         Icons.AutoMirrored.Default.List
@@ -128,9 +129,13 @@ fun QuizScreen() {
                 viewModel.isGameOver = false
             },
             onExit = {
-                viewController.sendEvent(BaseViewController.UiEvent.Navigate("back"))
                 viewModel.isGameOver = false
+                onBack()
             }
         )
+    }
+
+    BackHandler {
+        onBack()
     }
 }
