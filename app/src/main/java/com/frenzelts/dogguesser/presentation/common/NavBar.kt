@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun NavBar(
     title: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    action: @Composable (() -> Unit)? = null
 ) {
     Row(
         modifier = Modifier
@@ -44,5 +45,9 @@ fun NavBar(
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        if (action != null) action()
     }
 }

@@ -49,7 +49,6 @@ abstract class BaseViewController<VM> {
     }
 
     sealed class UiEvent {
-        data class Snackbar(val message: String) : UiEvent()
         object HapticSuccess : UiEvent()
         object HapticError : UiEvent()
         data class Navigate(val route: String) : UiEvent()

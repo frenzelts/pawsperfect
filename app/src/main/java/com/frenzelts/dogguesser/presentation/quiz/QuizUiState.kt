@@ -8,8 +8,9 @@ sealed interface QuizUiState {
 
     data class Ready(
         val question: QuizQuestion,
-        val selectedOption: QuizQuestion.Option? = null
+        val selectedOption: QuizQuestion.Option? = null,
     ) : QuizUiState
 
     data class Error(val message: String) : QuizUiState
+
 }
