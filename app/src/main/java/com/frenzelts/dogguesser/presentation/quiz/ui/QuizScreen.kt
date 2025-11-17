@@ -47,34 +47,41 @@ fun QuizScreen() {
             onBack = { viewController.sendEvent(BaseViewController.UiEvent.Navigate("back")) }
         )
 
-        when (state) {
-            is QuizUiState.Loading -> {
-                CircularProgressIndicator(Modifier.padding(horizontal = 16.dp))
-            }
-            is QuizUiState.Ready -> {
-                QuizContent(
-                    question = state.question,
-                    selectedOption = state.selectedOption,
-                    onOptionClick = { viewController.onOptionSelected(it) },
-                )
-            }
-            is QuizUiState.Error -> {
-                Column(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text("Something went wrong.")
-                    Button(
-                        onClick = { viewController.retry() },
-                        modifier = Modifier.fillMaxWidth()
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            contentAlignment = Alignment.Center
+        ) {
+            when (state) {
+                is QuizUiState.Loading -> {
+                    CircularProgressIndicator(Modifier.padding(horizontal = 16.dp))
+                }
+                is QuizUiState.Ready -> {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        QuizContent(
+                            question = state.question,
+                            selectedOption = state.selectedOption,
+                            onOptionClick = { viewController.onOptionSelected(it) },
+                        )
+                    }
+                }
+                is QuizUiState.Error -> {
+                    Column(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        Text("Next")
+                        Text("Something went wrong.")
+                        Button(
+                            onClick = { viewController.retry() },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Next")
+                        }
                     }
                 }
             }
         }
-
-        Spacer(modifier = Modifier.weight(1f))
 
         QuizFooter(
             modifier = Modifier

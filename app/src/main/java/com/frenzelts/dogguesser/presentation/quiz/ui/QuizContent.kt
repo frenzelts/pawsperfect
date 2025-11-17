@@ -5,19 +5,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -27,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.frenzelts.dogguesser.domain.model.QuizQuestion
@@ -37,30 +35,28 @@ fun QuizContent(
     selectedOption: QuizQuestion.Option?,
     onOptionClick: (QuizQuestion.Option) -> Unit,
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(0.5f)
-    ) {
+    Column {
         Image(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.5f),
             painter = rememberAsyncImagePainter(question.imageUrl),
             contentDescription = "Dog image",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Fit
         )
-    }
 
-    Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(16.dp))
 
-    question.options.forEach { option ->
-        OptionItem(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            option = option,
-            isSelected = selectedOption == option,
-            showResult = selectedOption != null,
-            onClick = { if (selectedOption == null) onOptionClick(option) }
-        )
-        Spacer(Modifier.height(12.dp))
+        question.options.forEach { option ->
+            OptionItem(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                option = option,
+                isSelected = selectedOption == option,
+                showResult = selectedOption != null,
+                onClick = { if (selectedOption == null) onOptionClick(option) }
+            )
+            Spacer(Modifier.height(12.dp))
+        }
     }
 }
 
@@ -72,25 +68,42 @@ fun OptionItem(
     showResult: Boolean,
     onClick: () -> Unit
 ) {
-    val targetColor = when {
-        !showResult -> MaterialTheme.colorScheme.surface
-        isSelected && option.isCorrect -> Color(0xFF4CAF50) // correct answer
-        isSelected && !option.isCorrect -> Color(0xFFF44336) // incorrect answer
-//        !isSelected && option.isCorrect -> Color(0xFF4CAF50) // expected correct answer
-        else -> MaterialTheme.colorScheme.surface
+    val (targetBg, targetBorder) = when {
+        !showResult -> MaterialTheme.colorScheme.surface to MaterialTheme.colorScheme.outline
+
+        isSelected && option.isCorrect ->
+            Color(0xFF4CAF50) to Color(0xFF1B621D)  // correct
+
+        isSelected && !option.isCorrect ->
+            Color(0xFFF44336) to Color(0xFFB22217)  // wrong
+
+        !isSelected && option.isCorrect ->
+            Color(0xFFC5E1A5) to Color(0xFF7CB342)  // expected correct
+
+        else ->
+            MaterialTheme.colorScheme.surface to MaterialTheme.colorScheme.outline
+    }
+
+    val textColor = when {
+        isSelected && option.isCorrect -> Color.White   // correct
+        isSelected && !option.isCorrect -> Color.White  // wrong
+        !isSelected && option.isCorrect -> Color.Black  // expected correct
+        else -> MaterialTheme.colorScheme.onSurface
     }
 
     val backgroundColor by animateColorAsState(
-        targetValue = targetColor,
+        targetValue = targetBg,
         animationSpec = tween(300),
-        label = ""
+        label = "background"
     )
+    val borderColor by animateColorAsState(
+        targetValue = targetBorder,
+        animationSpec = tween(300),
+        label = "background"
+    )
+    val borderStroke = BorderStroke(1.dp, borderColor)
 
-    val borderStroke = if (!showResult) {
-        BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
-    } else {
-        BorderStroke(1.dp, Color.Transparent)
-    }
+    val fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
 
     Surface(
         modifier = modifier
@@ -102,24 +115,20 @@ fun OptionItem(
     ) {
         Row(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
-
             Text(
+                modifier = Modifier
+                    .padding(vertical = 16.dp),
                 text = option.breed.displayName,
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f)
+                fontWeight = fontWeight,
+                color = textColor,
+                textAlign = TextAlign.Center
             )
-
-            if (showResult && isSelected) {
-                Icon(
-                    imageVector = if (option.isCorrect) Icons.Default.Check else Icons.Default.Close,
-                    contentDescription = null,
-                    tint = Color.White
-                )
-            }
         }
     }
 }
