@@ -34,9 +34,8 @@ class QuizViewController : BaseViewController<QuizViewModel>() {
         }
     }
 
-    fun toggleViewMode() {
-        val vm = viewModel ?: return
-        vm.toggleViewMode()
+    fun toggleLayoutMode() {
+        viewModel?.toggleLayoutMode()
     }
 
     fun onNext() {

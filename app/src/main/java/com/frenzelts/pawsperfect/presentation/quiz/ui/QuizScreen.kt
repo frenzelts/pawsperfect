@@ -56,7 +56,7 @@ fun QuizScreen(onBack: () -> Unit) {
                     else
                         Icons.Default.AccountBox
 
-                    IconButton(onClick = { viewController.toggleViewMode() }) {
+                    IconButton(onClick = { viewController.toggleLayoutMode() }) {
                         Icon(imageVector = icon, contentDescription = "Change View")
                     }
                 }
@@ -125,7 +125,6 @@ fun QuizScreen(onBack: () -> Unit) {
         GameOverDialog(
             onRestart = {
                 viewModel.resetGame()
-                viewModel.isGameOver = false
             },
             onExit = {
                 viewModel.isGameOver = false

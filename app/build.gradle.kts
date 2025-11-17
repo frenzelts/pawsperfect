@@ -68,7 +68,14 @@ dependencies {
     implementation(libs.androidx.appcompat)
 
     // ---- Testing ----
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(kotlin("test"))
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }

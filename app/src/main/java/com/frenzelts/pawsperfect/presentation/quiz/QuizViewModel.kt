@@ -22,16 +22,12 @@ class QuizViewModel @Inject constructor (
         private set
 
     var score by mutableStateOf<Int>(0)
-        private set
 
     var streak by mutableStateOf<Int>(0)
-        private set
 
     var lives by mutableIntStateOf(3)
-        private set
 
     var layoutMode by mutableStateOf<OptionLayoutMode>(OptionLayoutMode.GRID)
-        private set
 
     var isGameOver by mutableStateOf<Boolean>(false)
 
@@ -57,8 +53,8 @@ class QuizViewModel @Inject constructor (
 
         val isCorrect = option.isCorrect
         if (isCorrect) {
-            streak += 1
             score += (10 + streak * 2)
+            streak += 1
         } else {
             lives --
             if (lives <= 0) {
@@ -80,6 +76,7 @@ class QuizViewModel @Inject constructor (
         score = 0
         streak = 0
         lives = 3
+        isGameOver = false
         loadQuestion()
     }
 
@@ -90,7 +87,7 @@ class QuizViewModel @Inject constructor (
         }
     }
 
-    fun toggleViewMode() {
+    fun toggleLayoutMode() {
         layoutMode = when (layoutMode) {
             OptionLayoutMode.LIST -> OptionLayoutMode.GRID
             OptionLayoutMode.GRID -> OptionLayoutMode.LIST

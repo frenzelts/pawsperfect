@@ -16,12 +16,11 @@ import androidx.compose.ui.platform.LocalView
 @Composable
 fun PawsPerfectTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,    // enable dynamic color on Android 12+
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
 
-    // Dynamic color for Android 12+
     val colorScheme: ColorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             if (darkTheme) dynamicDarkColorScheme(context)
@@ -32,7 +31,6 @@ fun PawsPerfectTheme(
         else -> LightColors
     }
 
-    // Set system UI colors (status bar)
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
