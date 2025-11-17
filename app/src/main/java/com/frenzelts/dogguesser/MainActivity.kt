@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import com.frenzelts.dogguesser.di.DIManager
-import com.frenzelts.dogguesser.presentation.quiz.QuizScreen
+import com.frenzelts.dogguesser.presentation.quiz.ui.QuizScreen
 import com.frenzelts.dogguesser.presentation.theme.DogGuesserTheme
 import com.frenzelts.dogguesser.util.LocalActivity
 

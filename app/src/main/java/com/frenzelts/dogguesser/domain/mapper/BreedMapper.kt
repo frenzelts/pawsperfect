@@ -18,8 +18,8 @@ object BreedMapper {
                 val breedSegment = pathSegments[breedsIndex + 1]
                 val parts = breedSegment.split('-', '/').filter { it.isNotBlank() }
                 return Breed(
-                    breed = parts.firstOrNull()?.capitalize().orEmpty(),
-                    subBreed = parts.getOrNull(1)?.capitalize()
+                    breed = parts.firstOrNull().orEmpty(),
+                    subBreed = parts.getOrNull(1)
                 )
             }
         } catch (ignored: Throwable) {

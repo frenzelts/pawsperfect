@@ -44,7 +44,7 @@ abstract class BaseViewController<VM> {
         viewControllerScope.cancel()
     }
 
-    protected fun sendEvent(event: UiEvent) {
+    fun sendEvent(event: UiEvent) {
         viewControllerScope.launch { _events.emit(event) }
     }
 

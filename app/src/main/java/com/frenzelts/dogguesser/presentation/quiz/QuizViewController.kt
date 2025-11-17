@@ -18,34 +18,15 @@ class QuizViewController : BaseViewController<QuizViewModel>() {
     }
 
     override fun createViewModel(factory: ViewModelProvider.Factory) {
-        // Use the injected ViewModelProvider.Factory
         viewModel = ViewModelProvider(activity, viewModelFactory)[QuizViewModel::class.java]
     }
 
     fun onOptionSelected(option: QuizQuestion.Option) {
-        val vm = viewModel ?: return
+        viewModel?.submitAnswer(option)
+    }
 
-        val isCorrect = vm.submitAnswer(option)
-
-        if (isCorrect) {
-            sendEvent(UiEvent.HapticSuccess)
-            sendEvent(UiEvent.Snackbar("Correct! ${option.breed.displayName}"))
-        } else {
-            val correctName = (vm.uiState.value as? QuizUiState.Ready)
-                ?.question
-                ?.options
-                ?.firstOrNull { it.isCorrect }
-                ?.breed
-                ?.displayName
-
-            sendEvent(UiEvent.HapticError)
-            sendEvent(UiEvent.Snackbar("Wrong! Correct: $correctName"))
-        }
-
-        viewControllerScope.launch {
-            delay(900)
-            vm.loadQuestion()
-        }
+    fun onNext() {
+        viewModel?.loadQuestion()
     }
 
     fun retry() {
