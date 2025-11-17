@@ -5,6 +5,9 @@ import com.frenzelts.dogguesser.util.TextUtil.capitalize
 import java.net.URI
 
 object BreedMapper {
+
+    private const val PATH_SEGMENT_BREED = "breeds"
+
     /**
      * Mapper from image url path to strong type Breed model.
      * Example: /breeds/bulldog-boston/ -> breed: Bulldog, subbreed: Boston
@@ -13,7 +16,7 @@ object BreedMapper {
         try {
             val path = URI(url).path ?: return null
             val pathSegments = path.split("/").filter { it.isNotBlank() }
-            val breedsIndex = pathSegments.indexOf("breeds")
+            val breedsIndex = pathSegments.indexOf(PATH_SEGMENT_BREED)
             if (breedsIndex >= 0 && breedsIndex + 1 < pathSegments.size) {
                 val breedSegment = pathSegments[breedsIndex + 1]
                 val parts = breedSegment.split('-', '/').filter { it.isNotBlank() }

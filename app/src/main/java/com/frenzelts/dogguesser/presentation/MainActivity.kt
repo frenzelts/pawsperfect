@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import com.frenzelts.dogguesser.di.DIManager
 import com.frenzelts.dogguesser.presentation.theme.DogGuesserTheme
-import com.frenzelts.dogguesser.util.LocalActivity
+import com.frenzelts.dogguesser.presentation.common.LocalActivity
 
 class MainActivity : ComponentActivity() {
 

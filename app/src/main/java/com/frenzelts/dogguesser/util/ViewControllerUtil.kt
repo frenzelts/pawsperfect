@@ -8,8 +8,8 @@ import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.frenzelts.dogguesser.presentation.common.BaseViewController
+import com.frenzelts.dogguesser.presentation.common.LocalActivity
 
 object ViewControllerUtil {
 

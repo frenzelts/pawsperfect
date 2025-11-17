@@ -10,11 +10,13 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
+    private const val BASE_URL = "https://dog.ceo/api/"
+
     @Provides
     @Singleton
     fun provideRetrofit(): Retrofit =
         Retrofit.Builder()
-            .baseUrl("https://dog.ceo/api/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

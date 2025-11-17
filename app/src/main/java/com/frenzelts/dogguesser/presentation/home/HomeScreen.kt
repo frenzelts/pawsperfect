@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.frenzelts.dogguesser.constant.APP_NAME
 import com.frenzelts.dogguesser.util.ViewControllerUtil.rememberViewController
 
 @Composable
@@ -25,7 +26,7 @@ fun HomeScreen(onStartClicked: () -> Unit) {
         val viewModel = viewController.viewModel ?: return
 
         Text(
-            text = "Dog Guesser",
+            text = APP_NAME,
             style = MaterialTheme.typography.headlineLarge.copy(
                 fontSize = 34.sp,
                 fontWeight = FontWeight.Bold

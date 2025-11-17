@@ -41,7 +41,6 @@ fun QuizScreen(onBack: () -> Unit) {
                 is BaseViewController.UiEvent.HapticError -> {
                     haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 }
-                else -> Unit
             }
         }
     }
