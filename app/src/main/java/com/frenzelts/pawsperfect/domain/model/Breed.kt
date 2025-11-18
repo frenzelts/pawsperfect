@@ -1,6 +1,6 @@
 package com.frenzelts.pawsperfect.domain.model
 
-import com.frenzelts.pawsperfect.util.TextUtil.capitalize
+import com.frenzelts.pawsperfect.util.StringUtil.capitalize
 
 data class Breed(
     val breed: String,

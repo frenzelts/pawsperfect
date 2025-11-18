@@ -22,14 +22,14 @@ class ScoreDataStore(private val context: Context) {
     val highestStreak: Flow<Int> = context.scoreDataStore.data
         .map { it[KEY_HIGH_STREAK] ?: 0 }
 
-    suspend fun saveHighScore(score: Int) {
+    suspend fun saveHighestScore(score: Int) {
         context.scoreDataStore.edit { prefs ->
             val current = prefs[KEY_HIGH_SCORE] ?: 0
             if (score > current) prefs[KEY_HIGH_SCORE] = score
         }
     }
 
-    suspend fun saveHighStreak(streak: Int) {
+    suspend fun saveHighestStreak(streak: Int) {
         context.scoreDataStore.edit { prefs ->
             val current = prefs[KEY_HIGH_STREAK] ?: 0
             if (streak > current) prefs[KEY_HIGH_STREAK] = streak

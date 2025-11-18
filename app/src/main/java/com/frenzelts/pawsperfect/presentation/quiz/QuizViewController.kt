@@ -5,7 +5,6 @@ import com.frenzelts.pawsperfect.data.local.ScoreDataStore
 import com.frenzelts.pawsperfect.di.DIManager
 import com.frenzelts.pawsperfect.domain.model.QuizQuestion
 import com.frenzelts.pawsperfect.presentation.common.BaseViewController
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class QuizViewController : BaseViewController<QuizViewModel>() {
@@ -49,11 +48,6 @@ class QuizViewController : BaseViewController<QuizViewModel>() {
     }
 
     override fun onScreenStopped() {
-        viewControllerScope.launch {
-            viewModel?.let {
-                scoreStore.saveHighScore(it.score)
-                scoreStore.saveHighStreak(it.streak)
-            }
-        }
+        viewModel?.saveHighestScore()
     }
 }

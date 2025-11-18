@@ -21,9 +21,11 @@ class QuizViewModel @Inject constructor (
     var quizState by mutableStateOf<QuizUiState>(QuizUiState.Loading)
         private set
 
-    var score by mutableStateOf<Int>(0)
+    var score by mutableIntStateOf(0)
 
-    var streak by mutableStateOf<Int>(0)
+    var streak by mutableIntStateOf(0)
+
+    var highestStreak by mutableIntStateOf(0)
 
     var lives by mutableIntStateOf(3)
 
@@ -55,6 +57,9 @@ class QuizViewModel @Inject constructor (
         if (isCorrect) {
             score += (10 + streak * 2)
             streak += 1
+            if (streak > highestStreak) {
+                highestStreak = streak
+            }
         } else {
             lives --
             if (lives <= 0) {
@@ -75,6 +80,7 @@ class QuizViewModel @Inject constructor (
     fun resetGame() {
         score = 0
         streak = 0
+        highestStreak = 0
         lives = 3
         isGameOver = false
         loadQuestion()
@@ -82,8 +88,8 @@ class QuizViewModel @Inject constructor (
 
     fun saveHighestScore() {
         viewModelScope.launch {
-            scoreStore.saveHighScore(score)
-            scoreStore.saveHighStreak(streak)
+            scoreStore.saveHighestScore(score)
+            scoreStore.saveHighestStreak(highestStreak)
         }
     }
 

@@ -3,12 +3,13 @@ package com.frenzelts.pawsperfect.presentation.home
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.frenzelts.pawsperfect.constant.APP_NAME
+import com.frenzelts.pawsperfect.util.StringUtil.getAppName
 import com.frenzelts.pawsperfect.util.ViewControllerUtil.rememberViewController
 
 @Composable
@@ -26,7 +27,7 @@ fun HomeScreen(onStartClicked: () -> Unit) {
         val viewModel = viewController.viewModel ?: return
 
         Text(
-            text = APP_NAME,
+            text = getAppName(),
             style = MaterialTheme.typography.headlineLarge.copy(
                 fontSize = 34.sp,
                 fontWeight = FontWeight.Bold
@@ -46,11 +47,11 @@ fun HomeScreen(onStartClicked: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "Highest Score: ${viewModel.highestScore.value}",
+                    text = "Highest Score: ${viewModel.highestScore.collectAsState().value}",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "Highest Streak: ${viewModel.highestStreak.value}",
+                    text = "Highest Streak: ${viewModel.highestStreak.collectAsState().value}",
                     style = MaterialTheme.typography.titleMedium
                 )
             }

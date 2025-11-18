@@ -1,10 +1,10 @@
 package com.frenzelts.pawsperfect
 
-import com.frenzelts.pawsperfect.util.TextUtil.capitalize
+import com.frenzelts.pawsperfect.util.StringUtil.capitalize
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class TextUtilTest {
+class StringUtilTest {
 
     // ------------------------------------------------------------
     // 1. Normal lowercase

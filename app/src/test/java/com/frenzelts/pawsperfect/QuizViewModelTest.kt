@@ -143,6 +143,44 @@ class QuizViewModelTest {
         }
 
     @Test
+    fun `Given Ready state with highest streak, When reaching more streaks, Then highest streak increases`() =
+        runTest(dispatcher) {
+            // Given
+            viewModel.loadQuestion()
+            advanceUntilIdle()
+            viewModel.highestStreak = 5
+            val correctOption = sampleQuestion.options.first { it.isCorrect }
+
+            // When
+            repeat(6) {
+                viewModel.submitAnswer(correctOption)
+            }
+
+            // Then
+            assertEquals(6, viewModel.highestStreak)
+            assertEquals(6, viewModel.streak)
+        }
+
+    @Test
+    fun `Given Ready state with highest streak, When current streak still lower, Then highest streak remains the same`() =
+        runTest(dispatcher) {
+            // Given
+            viewModel.loadQuestion()
+            advanceUntilIdle()
+            viewModel.highestStreak = 10
+            val correctOption = sampleQuestion.options.first { it.isCorrect }
+
+            // When
+            repeat(4) {
+                viewModel.submitAnswer(correctOption)
+            }
+
+            // Then
+            assertEquals(10, viewModel.highestStreak)
+            assertEquals(4, viewModel.streak)
+        }
+
+    @Test
     fun `Given 1 life left, When submitting a wrong answer, Then game ends and highscore is saved`() =
         runTest(dispatcher) {
             // Given
@@ -150,7 +188,8 @@ class QuizViewModelTest {
             advanceUntilIdle()
             viewModel.lives = 1
             viewModel.score = 40
-            viewModel.streak = 3
+            viewModel.streak = 1
+            viewModel.highestStreak = 3
             val wrongOption = sampleQuestion.options.last()
 
             // When
@@ -159,8 +198,8 @@ class QuizViewModelTest {
 
             // Then
             assertTrue(viewModel.isGameOver)
-            coVerify { scoreStore.saveHighScore(40) }
-            coVerify { scoreStore.saveHighStreak(3) }
+            coVerify { scoreStore.saveHighestScore(40) }
+            coVerify { scoreStore.saveHighestStreak(3) }
         }
 
     // ------------------------------------------------------
@@ -224,15 +263,16 @@ class QuizViewModelTest {
     fun `Given score and streak, When saveHighestScore is called, Then datastore saves values`() =
         runTest(dispatcher) {
             // Given
-            viewModel.score = 20
+            viewModel.score = 30
             viewModel.streak = 2
+            viewModel.highestStreak = 3
 
             // When
             viewModel.saveHighestScore()
             advanceUntilIdle()
 
             // Then
-            coVerify { scoreStore.saveHighScore(20) }
-            coVerify { scoreStore.saveHighStreak(2) }
+            coVerify { scoreStore.saveHighestScore(30) }
+            coVerify { scoreStore.saveHighestStreak(3) }
         }
 }
