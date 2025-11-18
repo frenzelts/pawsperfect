@@ -1,6 +1,5 @@
 package com.frenzelts.pawsperfect.presentation.common.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
@@ -9,9 +8,9 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun PawsPerfectTheme(
@@ -23,20 +22,18 @@ fun PawsPerfectTheme(
 
     val colorScheme: ColorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            if (darkTheme) dynamicDarkColorScheme(context)
-            else dynamicLightColorScheme(context)
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColors
         else -> LightColors
     }
 
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-        }
+    val useDarkIcons = colorScheme.primary.luminance() <= 0.5f
+
+    val systemUi = rememberSystemUiController()
+    SideEffect {
+        systemUi.setStatusBarColor(color = colorScheme.primary, darkIcons = useDarkIcons)
+        systemUi.setNavigationBarColor(color = colorScheme.background, darkIcons = colorScheme.background.luminance() > 0.5f)
     }
 
     MaterialTheme(

@@ -66,5 +66,6 @@ abstract class BaseViewController<VM: ViewModel>: DefaultLifecycleObserver {
     sealed class UiEvent {
         object HapticSuccess : UiEvent()
         object HapticError : UiEvent()
+        object BackNavigate : UiEvent()
     }
 }

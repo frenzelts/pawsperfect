@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.core.view.WindowCompat
 import com.frenzelts.pawsperfect.di.DIManager
 import com.frenzelts.pawsperfect.presentation.common.theme.PawsPerfectTheme
 import com.frenzelts.pawsperfect.presentation.common.LocalActivity
@@ -13,7 +14,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DIManager.createAppComponent(application).inject(this)
-
+        WindowCompat.setDecorFitsSystemWindows(window, true)
         setContent {
             PawsPerfectTheme {
                 CompositionLocalProvider(

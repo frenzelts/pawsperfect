@@ -1,5 +1,6 @@
 package com.frenzelts.pawsperfect.presentation.quiz.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -37,6 +38,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.frenzelts.pawsperfect.domain.model.QuizQuestion
 import com.frenzelts.pawsperfect.presentation.quiz.QuizViewController
 
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun QuizContent(
     modifier: Modifier = Modifier,
@@ -98,7 +100,6 @@ fun QuizContent(
                             .fillMaxSize()
                             .padding(horizontal = 16.dp)
                     ) {
-
                         val totalHeight = maxHeight
                         val rows = 2
                         val cellHeight = totalHeight / rows - 12.dp
@@ -155,9 +156,7 @@ fun OptionItem(
     }
 
     val textColor = when {
-        isSelected && option.isCorrect -> Color.White   // correct
-        isSelected && !option.isCorrect -> Color.White  // wrong
-        !isSelected && option.isCorrect -> Color.Black  // expected correct
+        showResult && isSelected -> MaterialTheme.colorScheme.inverseOnSurface
         else -> MaterialTheme.colorScheme.onSurface
     }
 

@@ -3,6 +3,7 @@ agp = "8.5.2"
 kotlin = "2.0.21"
 compose-bom = "2025.07.00"
 activity-compose = "1.5.1"
+accompanist = "0.32.0"
 
 material-android = "1.12.0"
 
@@ -34,6 +35,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "material-android" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
 
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version = "2.8.4" }
 androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version = "2.8.4" }

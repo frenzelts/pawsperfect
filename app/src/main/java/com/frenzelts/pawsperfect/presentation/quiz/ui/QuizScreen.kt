@@ -4,20 +4,19 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.frenzelts.pawsperfect.presentation.common.BaseViewController
 import com.frenzelts.pawsperfect.presentation.common.NavBar
 import com.frenzelts.pawsperfect.presentation.quiz.QuizUiState
 import com.frenzelts.pawsperfect.presentation.quiz.QuizViewController
+import com.frenzelts.pawsperfect.R
 import com.frenzelts.pawsperfect.util.ViewControllerUtil
 
 @Composable
@@ -41,6 +40,10 @@ fun QuizScreen(onBack: () -> Unit) {
                 is BaseViewController.UiEvent.HapticError -> {
                     haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 }
+                is BaseViewController.UiEvent.BackNavigate -> {
+                    onBack.invoke()
+                    viewModel.resetGame()
+                }
             }
         }
     }
@@ -48,16 +51,17 @@ fun QuizScreen(onBack: () -> Unit) {
     Scaffold(
         topBar = {
             NavBar(
+                modifier = Modifier.statusBarsPadding(),
                 title = "Guess the Breed",
-                onBack = { onBack() },
+                onBack = { viewController.sendEvent(BaseViewController.UiEvent.BackNavigate) },
                 action = {
                     val icon = if (viewModel.layoutMode == OptionLayoutMode.LIST)
-                        Icons.AutoMirrored.Default.List
+                        painterResource(R.drawable.ic_list)
                     else
-                        Icons.Default.AccountBox
+                        painterResource(R.drawable.ic_grid)
 
                     IconButton(onClick = { viewController.toggleLayoutMode() }) {
-                        Icon(imageVector = icon, contentDescription = "Change View")
+                        Icon(painter = icon, contentDescription = "Change View")
                     }
                 }
             )
@@ -128,12 +132,12 @@ fun QuizScreen(onBack: () -> Unit) {
             },
             onExit = {
                 viewModel.isGameOver = false
-                onBack()
+                viewController.sendEvent(BaseViewController.UiEvent.BackNavigate)
             }
         )
     }
 
     BackHandler {
-        onBack()
+        viewController.sendEvent(BaseViewController.UiEvent.BackNavigate)
     }
 }

@@ -20,12 +20,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NavBar(
+    modifier: Modifier = Modifier,
     title: String,
     onBack: () -> Unit,
     action: @Composable (() -> Unit)? = null
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically

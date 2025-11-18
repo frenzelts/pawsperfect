@@ -1,5 +1,6 @@
 package com.frenzelts.pawsperfect.presentation.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ fun HomeScreen(onStartClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .statusBarsPadding()
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -31,7 +33,8 @@ fun HomeScreen(onStartClicked: () -> Unit) {
             style = MaterialTheme.typography.headlineLarge.copy(
                 fontSize = 34.sp,
                 fontWeight = FontWeight.Bold
-            )
+            ),
+            color = MaterialTheme.colorScheme.primary
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -61,7 +64,7 @@ fun HomeScreen(onStartClicked: () -> Unit) {
 
         Button(
             onClick = onStartClicked,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text(text = "Start Game", fontSize = 20.sp)
         }
