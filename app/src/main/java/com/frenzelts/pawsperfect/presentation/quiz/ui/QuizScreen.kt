@@ -26,10 +26,7 @@ fun QuizScreen(onBack: () -> Unit) {
     } ?: return
     val viewModel = viewController.viewModel ?: return
     val state = viewModel.quizState
-    val nextButton by derivedStateOf {
-        state is QuizUiState.Ready &&
-                state.selectedOption != null
-    }
+    val nextButton = state is QuizUiState.Ready && state.selectedOption != null
     val haptic = LocalHapticFeedback.current
     LaunchedEffect(Unit) {
         viewController.events.collect { event ->
@@ -41,6 +38,7 @@ fun QuizScreen(onBack: () -> Unit) {
                     haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 }
                 is BaseViewController.UiEvent.BackNavigate -> {
+                    viewModel.saveHighestScore()
                     onBack.invoke()
                     viewModel.resetGame()
                 }

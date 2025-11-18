@@ -49,5 +49,11 @@ class QuizViewController : BaseViewController<QuizViewModel>() {
 
     override fun onScreenStopped() {
         viewModel?.saveHighestScore()
+        viewModel?.resetGame()
+    }
+
+    override fun onScreenDestroyed() {
+        viewModel?.saveHighestScore()
+        viewModel?.resetGame()
     }
 }
